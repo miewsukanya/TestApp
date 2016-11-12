@@ -23,7 +23,7 @@ public class SignUpActivity extends AppCompatActivity {
     private Button button;
     private String nameString,phoneString,userString,passwordString,imagePathString,imageNameString;
     private Uri uri;
-
+    private Boolean aBoolean = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,13 +57,20 @@ public class SignUpActivity extends AppCompatActivity {
                     Log.d("12novV1", "Have Space");
                     MyAlert myAlert = new MyAlert(SignUpActivity.this, R.drawable.nobita48, "มีช่องว่าง", "กรุณากรอกให้ครบทุกช่องครับ");
                     myAlert.MyDialog();
+                } else if (aBoolean) {
+                    //Non choose Image
+                    MyAlert myAlert = new MyAlert(SignUpActivity.this, R.drawable.doremon48, "ยังไม่เลือกรูป", "กรุณาเลือกรูปด้วยครับ");
+                    myAlert.MyDialog();
+                } else {
+                    //Choose Image OK
+                    upLoadImageToServer();
                 }
 
             }//on click
         });
 
 
-     //Image Controller
+         //Image Controller
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,6 +82,10 @@ public class SignUpActivity extends AppCompatActivity {
         });
     }//Main Method
 
+    private void upLoadImageToServer() {
+        
+    }
+
     @Override
     protected void onActivityResult(int requestCode,
                                     int resultCode,
@@ -83,6 +94,7 @@ public class SignUpActivity extends AppCompatActivity {
         if ((requestCode == 0)&&(resultCode == RESULT_OK)) {
 
             Log.d("12novV1", "Result OK");
+            aBoolean = false;
             //show Image
             uri = data.getData();
             try {
