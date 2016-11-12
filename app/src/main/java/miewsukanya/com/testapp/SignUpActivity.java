@@ -1,5 +1,9 @@
 package miewsukanya.com.testapp;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -15,7 +19,8 @@ public class SignUpActivity extends AppCompatActivity {
     private EditText nameEditText,phoneEditText,usernameEditText, passwordEditText;
     private ImageView imageView;
     private Button button;
-    private String nameString,phoneString,userString, passwordString;
+    private String nameString,phoneString,userString,passwordString;
+    private Uri uri;
 
 
     @Override
@@ -45,18 +50,48 @@ public class SignUpActivity extends AppCompatActivity {
 
                 //check Space
                 if (nameString.equals("") || phoneString.equals("")||
-                        userString.equals("")|| phoneString.equals("")) {
-                    //Have space
+                        userString.equals("")|| passwordString.equals("")) {
+                    //Have space check log
                     Log.d("12novV1", "Have Space");
                     MyAlert myAlert = new MyAlert(SignUpActivity.this, R.drawable.nobita48, "มีช่องว่าง", "กรุณากรอกให้ครบทุกช่องครับ");
                     myAlert.MyDialog();
                 }
 
-
-
             }//on click
         });
 
+
+     //Image Controller
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT); //intent program
+                intent.setType("image/*"); // select photo เปิดโปรแกรมไหนที่มีภาพ
+                startActivityForResult(Intent.createChooser(intent,"โปรดเลือกแอปดูภาพ"),0); //ใส่ int อะไรก็ได้
+
+            }//on click
+        });
     }//Main Method
 
+    @Override
+    protected void onActivityResult(int requestCode,
+                                    int resultCode,
+                                    Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if ((requestCode == 0)&&(resultCode == RESULT_OK)) {
+
+            Log.d("12novV1", "Result OK");
+            //show Image
+            uri = data.getData();
+            try {
+                Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver()
+                        .openInputStream(uri));
+                imageView.setImageBitmap(bitmap);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }//if
+
+
+    }//onActivityResult
 }//Main Class
