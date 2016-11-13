@@ -133,9 +133,19 @@ public class MainActivity extends AppCompatActivity {
                             getResources().getString(R.string.message_UserFalse));
                     myAlert.MyDialog();
 
-                } else if (phoneStrings.equals(truePassword)) {
+                } else if (passwordString.equals(truePassword)) {
                     //PW True
                     Toast.makeText(context,"Welcome",Toast.LENGTH_LONG).show();
+
+                    //intent to Service
+                    Intent intent = new Intent(MainActivity.this,ServiceActivity.class);
+                    intent.putExtra("Name", nameStrings);
+                    intent.putExtra("Phone", phoneStrings);
+                    intent.putExtra("Image", imageStrings);
+                    startActivity(intent);
+                    finish();
+
+
                 } else {
                     //PW False
                     MyAlert myAlert = new MyAlert(context, R.drawable.kon48,
